@@ -2,6 +2,8 @@ import pygame
 import app
 import math
 
+
+
 class Enemy:
     def __init__(self, x, y, enemy_type, enemy_assets, speed=app.DEFAULT_ENEMY_SPEED):
         # TODO: Define attributes for X and Y
