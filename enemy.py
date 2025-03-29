@@ -2,15 +2,16 @@ import pygame
 import app
 import math
 
-
-
 class Enemy:
     def __init__(self, x, y, enemy_type, enemy_assets, speed=app.DEFAULT_ENEMY_SPEED):
-        # TODO: Define attributes for X and Y
-        
-        # TODO: Define an attribute for movement speed
-        
-        # TODO: Load animation frames
+        # Define attributes for X and Y
+        self.x = x
+        self.y = y
+
+        # Define an attribute for movement speed
+        self.speed = speed
+
+        # Load animation frames
         self.frames = enemy_assets[enemy_type]
         self.frame_index = 0
         self.animation_timer = 0
@@ -18,21 +19,27 @@ class Enemy:
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_rect(center=(self.x, self.y))
         
-        # TODO: Define an attribute for enemy type
-        
-        # TODO: Track if enemy is facing left
-        
-        # TODO: Define knockback properties
-        
+        # Define an attribute for enemy type
+        self.enemy_type = enemy_type 
+
+        # Track if enemy is facing left
+        self.facing_left = False
+
+        # Define knockback properties
+        self.knockback_dist_remaining = 0
+        self.knockback_dx = 0
+        self.knockback_dy = 0
+
     def update(self, player):
-        # TODO: Check if knockback is active and call apply_knockback()
+        # Check if knockback is active and call apply_knockback()
+        if self.knockback_dist_remaining > 0:
+            self.apply_knockback()
+        else:
+            self.move_toward_player(player) # If no knockback, move toward the player
 
-        # TODO: If no knockback, move toward the player
-
-        # TODO: Call animate() to update enemy sprite animation
-
-        pass
-
+        # Call animate() to update enemy sprite animation
+        self.animate()
+        
     def move_toward_player(self, player):
         # Calculates direction vector toward player
         dx = player.x - self.x
@@ -53,11 +60,18 @@ class Enemy:
         step = min(app.ENEMY_KNOCKBACK_SPEED, self.knockback_dist_remaining)
         self.knockback_dist_remaining -= step
 
-        # TODO: Apply knockback effect to enemy position 
+        # Apply knockback effect to enemy position 
         # Hint: apply the dx, dy attributes
-        
-        # TODO: Update facing direction based on knockback direction
-        pass
+        self.x += self.knockback_dx * step
+        self.y += self.knockback_dy * step
+
+        # Update facing direction based on knockback direction
+        if self.knockback_dx < 0:
+            self.facing_left = True
+        else:
+            self.facing_left = False
+
+        self.rect.center = (self.x, self.y)
 
     def animate(self):
         self.animation_timer += 1
@@ -71,12 +85,18 @@ class Enemy:
         pass
 
     def draw(self, surface):
-        # TODO: Flip the sprite if facing left
+        # Flip the sprite if facing left
+        """if not self.game_over:
+            self.player.draw(self.screen)""" 
 
-        # TODO: Draw enemy sprite on the given surface
+        if self.facing_left:
+            flipped_image = pygame.transform.flip(self.image, True, False)
+            surface.blit(flipped_image, self.rect)
+        else:
+            surface.blit(self.image, self.rect)
+
+        # Draw enemy sprite on the given surface
         
-        pass
-
     def set_knockback(self, px, py, dist):
         dx = self.x - px
         dy = self.y - py

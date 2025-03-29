@@ -1,6 +1,4 @@
 # main.py
-
-# this is an inital commit on march 28th
 from game import Game
 
 def main():
