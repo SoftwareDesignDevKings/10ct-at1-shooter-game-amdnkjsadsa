@@ -1,3 +1,5 @@
+# FINAL SUBMISSION OF MY AT1 ASSESSMENT
+
 import math
 import pygame
 import random
@@ -51,7 +53,6 @@ class Game:
         self.player_death_sfx = pygame.mixer.Sound("assets/sfx/player_death.mp3")
         self.menu_click_sfx = pygame.mixer.Sound("assets/sfx/menu_click.wav")
         self.player_damaged_sfx = pygame.mixer.Sound("assets/sfx/player_damaged.wav")
-        self.walking_sfx = pygame.mixer.Sound("assets/sfx/walking.wav")
 
         # initialise enemies and enemy spawn timer
         self.enemies = []
@@ -304,7 +305,7 @@ class Game:
                 if self.powerup_effect == "speed_boost":
                     self.player.increase_speed(10)
                 elif self.powerup_effect == "speed_up_bullets":
-                    self.player.speed_up_bullets(10)
+                    self.player.speed_up_bullets(3)
                 elif self.powerup_effect == "more_bullets":
                     self.player.increase_bullet_count(3)
 
